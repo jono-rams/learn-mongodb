@@ -1,5 +1,6 @@
 const express = require("express");
 const { connectToDb, getDb } = require("./db");
+const { ObjectId } = require("mongodb");
 
 // init app & middleware
 const app = express();
@@ -18,7 +19,7 @@ connectToDb((err) => {
 // routes
 app.get("/books", (req, res) => {
   let books = [];
-  
+
   db.collection("books")
     .find()
     .sort({ author: 1 })
@@ -29,4 +30,24 @@ app.get("/books", (req, res) => {
     .catch(() => {
       res.status(500).json({ error: "Error fetching books" });
     });
+});
+
+app.get("/books/:id", (req, res) => {
+  if (ObjectId.isValid(req.params.id)) {
+    db.collection("books")
+      .findOne({ _id: new ObjectId(req.params.id) })
+      .then((doc) => {
+        if (!doc) {
+          return res.status(404).json({ error: "Not a valid document id" });
+        }
+        res.status(200).json(doc);
+      })
+      .catch((err) => {
+        res
+          .status(500)
+          .json({ error: `Error fetching book with id ${req.params.id}` });
+      });
+  } else {
+    res.status(404).json({ error: "Not a valid document id" });
+  }
 });
