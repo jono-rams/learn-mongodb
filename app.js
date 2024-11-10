@@ -4,6 +4,7 @@ const { ObjectId } = require("mongodb");
 
 // init app & middleware
 const app = express();
+app.use(express.json());
 
 // db connection
 let db;
@@ -43,11 +44,24 @@ app.get("/books/:id", (req, res) => {
         res.status(200).json(doc);
       })
       .catch((err) => {
-        res
-          .status(500)
-          .json({ error: `Error fetching book with id ${req.params.id}` });
+        console.error(err);
+        res.status(500).json({ error: `Error fetching book with id ${req.params.id}` });
       });
   } else {
     res.status(404).json({ error: "Not a valid document id" });
   }
+});
+
+app.post("/books", (req, res) => {
+  const book = req.body;
+
+  db.collection("books")
+    .insertOne(book)
+    .then((result) => {
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: "Could not create a new book" });
+    });
 });
