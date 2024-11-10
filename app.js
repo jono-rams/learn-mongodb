@@ -17,5 +17,16 @@ connectToDb((err) => {
 
 // routes
 app.get("/books", (req, res) => {
-  res.json({ message: "Welcome to the books API" });
+  let books = [];
+  
+  db.collection("books")
+    .find()
+    .sort({ author: 1 })
+    .forEach((book) => books.push(book))
+    .then(() => {
+      res.status(200).json(books);
+    })
+    .catch(() => {
+      res.status(500).json({ error: "Error fetching books" });
+    });
 });
