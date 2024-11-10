@@ -1,0 +1,27 @@
+{
+  "name": "learn-mongodb",
+  "version": "1.0.0",
+  "description": "Learning MongoDb by creating a Node.js API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jono-rams/learn-mongodb.git"
+  },
+  "keywords": [
+    "node",
+    "mongodb"
+  ],
+  "author": "Jonathan Rampersad",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/jono-rams/learn-mongodb/issues"
+  },
+  "homepage": "https://github.com/jono-rams/learn-mongodb#readme",
+  "dependencies": {
+    "express": "^4.21.1",
+    "mongodb": "^6.10.0"
+  }
+}
